@@ -2,27 +2,46 @@ import { adicionarLinha, mediaMaterias } from './addLinha.js';
 import { atualizarMediaGeral } from './mediaGeral.js';
 import { encontrarMaiorMedia } from './maiorMedia.js';
 
+const notasIniciais = [
+  {
+    nome: "Matemática",
+    nota1: 8,
+    nota2: 9,
+    nota3: 7,
+    nota4: 6,
+  },
+  {
+    nome: "Português",
+    nota1: 7,
+    nota2: 8,
+    nota3: 6,
+    nota4: 7,
+  }
+];
 
-//[M2S05] Ex. 04 - LabScore (Pt.2) & Ex. 05
-document.getElementById('adicionar-linha').addEventListener('click', () => {
-  adicionarLinha();
-  atualizarMediaGeral();
+function inicializarNotas() {
+  if (!localStorage.getItem('notasMaterias')) {
+    localStorage.setItem('notasMaterias', JSON.stringify(notasIniciais));
+  }
+}
 
-  //[M2S05] Ex. 07 - LabScore (Pt.2)
-  const maiorMedia = encontrarMaiorMedia(mediaMaterias);
-  document.getElementById('maior-media').textContent = `A maior média entre as matérias é: ${maiorMedia}`;
-});
-
-//[M2S05] Ex. 06 - LabScore (Pt.2)
 document.addEventListener('DOMContentLoaded', () => {
+  inicializarNotas();
+  carregarNotas();
   const mediaTexto = document.querySelector('#media-geral').textContent;
   const mediaInicial = parseFloat(mediaTexto.match(/[\d\.]+/)[0]);
   mediaMaterias.push(mediaInicial);
   atualizarMediaGeral();
 });
 
+document.getElementById('adicionar-linha').addEventListener('click', () => {
+  adicionarLinha();
+  atualizarMediaGeral();
 
-//[M2S06] Ex. 04 - LabScore (Pt.3)
+  const maiorMedia = encontrarMaiorMedia(mediaMaterias);
+  document.getElementById('maior-media').textContent = `A maior média entre as matérias é: ${maiorMedia}`;
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const dadosAluno = localStorage.getItem('dadosAluno');
 
@@ -38,3 +57,28 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Dados do aluno não encontrados no localStorage');
   }
 });
+
+function carregarNotas() {
+  const notas = JSON.parse(localStorage.getItem('notasMaterias')) || [];
+  const tabelaBody = document.getElementById('tabela-body');
+  tabelaBody.innerHTML = '';
+
+  notas.forEach(nota => {
+    const media = ((nota.nota1 + nota.nota2 + nota.nota3 + nota.nota4) / 4).toFixed(2);
+    const linha =
+      `<tr>
+        <td>${nota.nome}</td>
+        <td>${nota.nota1}</td>
+        <td>${nota.nota2}</td>
+        <td>${nota.nota3}</td>
+        <td>${nota.nota4}</td>
+        <td>${media}</td>
+      </tr>`;
+    tabelaBody.innerHTML += linha;
+    mediaMaterias.push(parseFloat(media));
+  });
+
+  atualizarMediaGeral();
+  const maiorMedia = encontrarMaiorMedia(mediaMaterias);
+  document.getElementById('maior-media').textContent = `A maior média entre as matérias é: ${maiorMedia}`;
+}

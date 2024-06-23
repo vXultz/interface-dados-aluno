@@ -20,6 +20,8 @@ export function adicionarLinha() {
   const media = calcularMedia(notas);
   mediaMaterias.push(parseFloat(media));
   adicionarLinhaTabela(materia, notas, media);
+
+  salvarNotasLocalStorage(materia, notas, media);
 }
 
 function calcularMedia(notas) {
@@ -29,14 +31,19 @@ function calcularMedia(notas) {
 
 function adicionarLinhaTabela(materia, notas, media) {
   const tbody = document.querySelector('tbody');
-  tbody.innerHTML += `
-      <tr>
+  tbody.innerHTML +=
+    `<tr>
           <td>${materia}</td>
           <td>${notas[0]}</td>
           <td>${notas[1]}</td>
           <td>${notas[2]}</td>
           <td>${notas[3]}</td>
           <td>${media}</td>
-      </tr>
-  `;
+      </tr>`;
+}
+
+function salvarNotasLocalStorage(materia, notas, media) {
+  const notasSalvas = JSON.parse(localStorage.getItem('notasMaterias')) || [];
+  notasSalvas.push({ nome: materia, nota1: notas[0], nota2: notas[1], nota3: notas[2], nota4: notas[3], media: parseFloat(media) });
+  localStorage.setItem('notasMaterias', JSON.stringify(notasSalvas));
 }

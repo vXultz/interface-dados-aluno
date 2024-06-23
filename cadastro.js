@@ -1,5 +1,3 @@
-// cadastro.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('cadastro-form');
   const cepInput = document.getElementById('cep');
@@ -28,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('dadosAluno', JSON.stringify(aluno));
 
       alert('Cadastro realizado com sucesso!');
-      window.location.href = 'index.html'; // Redireciona para a página principal após o cadastro
+      window.location.href = 'index.html';
     });
 
     cepInput.addEventListener('blur', (e) => {
