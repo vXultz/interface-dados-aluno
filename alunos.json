@@ -1,0 +1,16 @@
+{
+  "alunos": [
+    {
+      "nome": "João da Silva",
+      "serie": "2º ano do Ensino Médio"
+    },
+    {
+      "nome": "Maria Oliveira",
+      "serie": "1º ano do Ensino Médio"
+    },
+    {
+      "nome": "José Santos",
+      "serie": "3º ano do Ensino Médio"
+    }
+  ]
+}

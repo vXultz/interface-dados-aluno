@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mediaInicial = parseFloat(mediaTexto.match(/[\d\.]+/)[0]);
   mediaMaterias.push(mediaInicial);
   atualizarMediaGeral();
+  carregarListaDeAlunos();
 });
 
 document.getElementById('adicionar-linha').addEventListener('click', () => {
@@ -81,4 +82,20 @@ function carregarNotas() {
   atualizarMediaGeral();
   const maiorMedia = encontrarMaiorMedia(mediaMaterias);
   document.getElementById('maior-media').textContent = `A maior média entre as matérias é: ${maiorMedia}`;
+}
+
+function carregarListaDeAlunos() {
+  fetch('http://localhost:3000/alunos')
+    .then(response => response.json())
+    .then(data => {
+      const listaAlunos = document.querySelector('.lista-alunos ul');
+      listaAlunos.innerHTML = '';
+
+      data.forEach(aluno => {
+        const li = document.createElement('li');
+        li.textContent = aluno.nome;
+        listaAlunos.appendChild(li);
+      });
+    })
+    .catch(error => console.error('Erro ao carregar lista de alunos:', error));
 }
